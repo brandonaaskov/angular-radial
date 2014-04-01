@@ -4,11 +4,38 @@
   <meta charset="UTF-8">
   <title>angular-radial example</title>
 
-  <script src="bower_components/angular/angular.min.js"></script>
-  <script src="bower_components/angular-route/angular-route.min.js"></script>
+  <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+
+  <script src="bower_components/angular/angular.js"></script>
+  <script src="bower_components/angular-route/angular-route.js"></script>
   <script src="build/angular-radial_0.1.0.js"></script>
+
+  <script>
+    angular.module('demo', ['fullscreen.radial']);
+
+    angular.module('demo').controller('demoController', function ($scope) {
+      $scope.getRandomPercent = function () {
+        return Math.random() * 100;
+      };
+    });
+  </script>
 </head>
 <body ng-app="demo">
-  <radial percent-complete="35"></radial>
+  <dl class="container" ng-controller="demoController">
+    <dt><h1>Basic</h1></dt>
+    <dd class="jumbotron">
+      <radial percent-complete="getRandomPercent()"></radial>
+    </dd>
+
+    <dt><h1>Basic (Hardcoded)</h1></dt>
+    <dd class="jumbotron">
+      <radial percent-complete="50"></radial>
+    </dd>
+
+    <dt><h1>The Kitchen Sink</h1></dt>
+    <dd class="jumbotron">
+      <radial percent-complete="getRandomPercent()" font-family="'Comic Sans', 'Marker Felt', sans_serif" bg-color="e0f1cb" color="9ad154"></radial>
+    </dd>
+  </dl>
 </body>
 </html>

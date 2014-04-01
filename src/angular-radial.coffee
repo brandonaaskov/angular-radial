@@ -1,24 +1,10 @@
-angular.module('gunslinger.radial', [])
-
-angular.module('gunslinger.radial').directive 'radial', ($timeout) ->
-  # private vars
-  bgColor = 'c9e0f4'
-  color = '4c98dc'
-  canvas = undefined
-  context = undefined
-  radius = 100
-  lineWidth = 55
-  lineCap = 'butt' # butt, round, square
-  xCoord = undefined
-  yCoord = undefined
-  fontFamily = 'Monaco, Consolas, "Lucida Console", monospace'
-
+angular.module('fullscreen.radial').directive 'radial', ($timeout) ->
   restrict: 'E'
   replace: true
-  template: '<canvas class="radial"></canvas>'
+  template: '<canvas class="fullscreen-radial radial"></canvas>'
   scope:
     radius: '='
-    lineWidth: '='
+    lineWidth: '@'
     lineCap: '@'
     percentComplete: '='
     bgColor: '@'
@@ -26,8 +12,17 @@ angular.module('gunslinger.radial').directive 'radial', ($timeout) ->
     fontFamily: '@'
 
   link: (scope, element) ->
-    canvas = angular.element(element).get(0)
+    bgColor = 'c9e0f4'
+    color = '4c98dc'
+    radius = 100
+    lineWidth = 55
+    lineCap = 'butt' # butt, round, square
+    xCoord = undefined
+    yCoord = undefined
+    fontFamily = 'Monaco, Consolas, "Lucida Console", monospace'
+    canvas = angular.element(element)[0]
     context = canvas.getContext '2d'
+
     radius = scope.radius if scope.radius
     lineWidth = scope.lineWidth if scope.lineWidth
     lineCap = scope.lineCap if scope.lineCap
@@ -35,17 +30,18 @@ angular.module('gunslinger.radial').directive 'radial', ($timeout) ->
     bgColor = scope.bgColor if scope.bgColor
     color = scope.color if scope.color
     edgeLength = (radius + lineWidth) * 2
-    canvas.width = edgeLength
-    canvas.height = edgeLength
+
     # x/y coordinates are for the center of the circle
     xCoord = radius + lineWidth
     yCoord = radius + lineWidth
 
-  controller: ($scope) ->
-    getDegrees = (percent = $scope.percentComplete) ->
-      return unless _.isNumber percent
-      # 90º is actually straight down, so our starting point is 90
-      return (percent * 360)/100
+    # set width/height
+    canvas.width = edgeLength
+    canvas.height = edgeLength
+
+    getDegrees = ->
+      return unless scope.percentComplete
+      return (scope.percentComplete* 360)/100
 
     getRadians = (degrees) -> degrees * Math.PI/180
 
@@ -67,15 +63,16 @@ angular.module('gunslinger.radial').directive 'radial', ($timeout) ->
       context.arc xCoord, yCoord, radius, startAngle, endAngle
       context.stroke()
 
-    drawBackground = -> drawArc -270, 90, bgColor #draws background well
+    drawBackground = -> drawArc -270, 90, bgColor # draws background arc
 
     drawMeter = ->
       clearCanvas()
       drawBackground()
-      endDegrees = 90 + getDegrees($scope.percentComplete)
+      endDegrees = 90 + getDegrees(scope.percentComplete)
       drawArc 90, endDegrees, color # draws "filled" arc on top
-      return unless $scope.percentComplete > 0
-      addText $scope.percentComplete # adds text in the middle
+      return unless scope.percentComplete > 0
+      addText scope.percentComplete # adds text in the middle
+      console.log 'color', color
 
     addText = ->
       # Lets add the text
@@ -84,12 +81,12 @@ angular.module('gunslinger.radial').directive 'radial', ($timeout) ->
       context.font = "#{fontSize}px #{fontFamily}"
       context.textAlign = 'center'
       context.textBaseline = 'middle'
-      percent = Math.round($scope.percentComplete)
+      percent = Math.round scope.percentComplete
       context.fillText "#{percent}%", xCoord, yCoord
 
     # if we resize after we've drawn the arc
     # (that's how the Canvas API is designed)
     $timeout -> drawMeter()
-
-    $scope.drawMeter = drawMeter
-    $scope.$watch 'percentComplete', -> drawMeter()
+    scope.$watch 'percentComplete', -> drawMeter()
+    scope.render = drawMeter
+    scope.clear = clearCanvas

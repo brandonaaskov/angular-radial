@@ -23,13 +23,14 @@ var paths = {
 gulp.task('compile', function () {
   gulp.src(paths.source)
     .pipe(plumber())
-    .pipe(coffee())
+    .pipe(coffee({bare: true}))
     .pipe(gulp.dest('src'));
 });
 
 //compresses using uglify
 gulp.task('compress', function () {
   gulp.src(paths.compiled)
+    .pipe(plumber())
     .pipe(uglify())
     .pipe(concat(pkg.name + "_"+ pkg.version +".min.js"))
     .pipe(gulp.dest('build'));
@@ -37,6 +38,7 @@ gulp.task('compress', function () {
 
 gulp.task('uncompressed', function () {
   gulp.src(paths.compiled)
+    .pipe(plumber())
     .pipe(concat(pkg.name + "_"+ pkg.version +".js"))
     .pipe(gulp.dest('build'));
 });
@@ -52,7 +54,7 @@ gulp.task('serve', function () {
   var app = connect().use(connect.static(__dirname));
 
   http.createServer(app).listen(serverPort);
-  console.log('test page running at http://localhost:' + serverPort + '/example.html');
+  console.log('test page running at http://localhost:' + serverPort + '/index.html');
 });
 
 // builds everything to the `dist` directory
