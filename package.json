@@ -1,0 +1,19 @@
+{
+  "name": "angular-radial",
+  "version": "0.1.0",
+  "dependencies": {},
+  "devDependencies": {
+    "coffee-script": "1.x.x",
+    "lodash": "~2.4.1",
+    "gulp-plumber": "*",
+    "gulp-coffee": "*",
+    "gulp": "*",
+    "connect": "~2.14.3",
+    "gulp-uglify": "^0.2.1",
+    "gulp-rename": "^1.2.0",
+    "gulp-concat": "^2.2.0"
+  },
+  "scripts": {
+    "test": "karma start karma.js"
+  }
+}

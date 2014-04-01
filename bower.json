@@ -1,0 +1,11 @@
+{
+  "name": "angular-radial",
+  "version": "0.1.0",
+  "dependencies": {},
+  "devDependencies": {
+    "angular-mocks": "1.x.x",
+    "angular-scenario": "1.x.x",
+    "angular-sanitize": "1.x.x",
+    "angular-route": "~1.2.15"
+  }
+}
