@@ -1,11 +1,18 @@
 {
   "name": "angular-radial",
   "version": "0.1.0",
-  "dependencies": {},
   "devDependencies": {
-    "angular-mocks": "1.x.x",
-    "angular-scenario": "1.x.x",
-    "angular-sanitize": "1.x.x",
-    "angular-route": "~1.2.15"
-  }
+    "angular": "*"
+  },
+  "homepage": "https://github.com/brandonaaskov/angular-radial",
+  "authors": [
+    "Brandon Aaskov <baaskov@fullscreen.net>"
+  ],
+  "description": "Part of the Fullscreen Creator Platform, this is a handy directive for easy radials that relies entirely on the Canvas API and nothing else",
+  "keywords": [
+    "angular",
+    "radial",
+    "directive"
+  ],
+  "license": "MPL"
 }

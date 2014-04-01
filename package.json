@@ -12,7 +12,8 @@
     "gulp-uglify": "^0.2.1",
     "gulp-rename": "^1.2.0",
     "gulp-concat": "^2.2.0",
-    "gulp-wait": "0.0.2"
+    "gulp-wait": "0.0.2",
+    "angular": "~1.2.15"
   },
   "scripts": {
     "test": "karma start karma.js"
