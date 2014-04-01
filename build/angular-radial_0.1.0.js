@@ -1,4 +1,5 @@
 angular.module('fullscreen.radial', []);
+
 angular.module('fullscreen.radial').directive('radial', function($timeout) {
   return {
     restrict: 'E',
@@ -6,7 +7,7 @@ angular.module('fullscreen.radial').directive('radial', function($timeout) {
     template: '<canvas class="fullscreen-radial radial"></canvas>',
     scope: {
       radius: '=',
-      lineWidth: '@',
+      lineWidth: '=',
       lineCap: '@',
       percentComplete: '=',
       bgColor: '@',
@@ -78,17 +79,16 @@ angular.module('fullscreen.radial').directive('radial', function($timeout) {
       drawBackground = function() {
         return drawArc(-270, 90, bgColor);
       };
-      drawMeter = function() {
+      drawMeter = function(percent) {
         var endDegrees;
         clearCanvas();
         drawBackground();
-        endDegrees = 90 + getDegrees(scope.percentComplete);
+        endDegrees = 90 + getDegrees(percent);
         drawArc(90, endDegrees, color);
-        if (!(scope.percentComplete > 0)) {
+        if (!(percent > 0)) {
           return;
         }
-        addText(scope.percentComplete);
-        return console.log('color', color);
+        return addText(percent);
       };
       addText = function() {
         var fontSize, percent;
@@ -101,13 +101,13 @@ angular.module('fullscreen.radial').directive('radial', function($timeout) {
         return context.fillText("" + percent + "%", xCoord, yCoord);
       };
       $timeout(function() {
-        return drawMeter();
-      });
-      scope.$watch('percentComplete', function() {
-        return drawMeter();
+        return drawMeter(scope.percentComplete);
       });
       scope.render = drawMeter;
-      return scope.clear = clearCanvas;
+      scope.clear = clearCanvas;
+      return scope.$watch('percentComplete', function(percent) {
+        return drawMeter(percent);
+      });
     }
   };
 });

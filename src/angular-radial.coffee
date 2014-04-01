@@ -1,10 +1,12 @@
+angular.module 'fullscreen.radial', []
+
 angular.module('fullscreen.radial').directive 'radial', ($timeout) ->
   restrict: 'E'
   replace: true
   template: '<canvas class="fullscreen-radial radial"></canvas>'
   scope:
     radius: '='
-    lineWidth: '@'
+    lineWidth: '='
     lineCap: '@'
     percentComplete: '='
     bgColor: '@'
@@ -65,14 +67,13 @@ angular.module('fullscreen.radial').directive 'radial', ($timeout) ->
 
     drawBackground = -> drawArc -270, 90, bgColor # draws background arc
 
-    drawMeter = ->
+    drawMeter = (percent) ->
       clearCanvas()
       drawBackground()
-      endDegrees = 90 + getDegrees(scope.percentComplete)
+      endDegrees = 90 + getDegrees(percent)
       drawArc 90, endDegrees, color # draws "filled" arc on top
-      return unless scope.percentComplete > 0
-      addText scope.percentComplete # adds text in the middle
-      console.log 'color', color
+      return unless percent > 0
+      addText percent # adds text in the middle
 
     addText = ->
       # Lets add the text
@@ -86,7 +87,7 @@ angular.module('fullscreen.radial').directive 'radial', ($timeout) ->
 
     # if we resize after we've drawn the arc
     # (that's how the Canvas API is designed)
-    $timeout -> drawMeter()
-    scope.$watch 'percentComplete', -> drawMeter()
+    $timeout -> drawMeter(scope.percentComplete)
     scope.render = drawMeter
     scope.clear = clearCanvas
+    scope.$watch 'percentComplete', (percent) -> drawMeter percent

@@ -4,6 +4,7 @@ var pkg = require('./package.json'),
     coffee = require('gulp-coffee'),
     plumber = require('gulp-plumber'),
     concat = require('gulp-concat'),
+    wait = require('gulp-wait'),
     rename = require('gulp-rename'),
     uglify = require('gulp-uglify');
 
@@ -22,6 +23,7 @@ var paths = {
 //compiles coffee script files
 gulp.task('compile', function () {
   gulp.src(paths.source)
+    .pipe(wait(1000))
     .pipe(plumber())
     .pipe(coffee({bare: true}))
     .pipe(gulp.dest('src'));

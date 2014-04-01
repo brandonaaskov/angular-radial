@@ -5,36 +5,128 @@
   <title>angular-radial example</title>
 
   <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+  <style>
+    .jumbotron {
+      position: relative;
+    }
+
+    .badge {
+      position: absolute;
+      top: 5px;
+      right: 5px;
+    }
+  </style>
 
   <script src="bower_components/angular/angular.js"></script>
   <script src="bower_components/angular-route/angular-route.js"></script>
-  <script src="build/angular-radial_0.1.0.js"></script>
+  <script src="src/angular-radial.js"></script>
 
   <script>
+    //this is a good example of how you'd include the radial with your app
     angular.module('demo', ['fullscreen.radial']);
 
-    angular.module('demo').controller('demoController', function ($scope) {
-      $scope.getRandomPercent = function () {
+    // everything else in this script block is for this example page,
+    // so just ignore it
+    angular.module('demo').controller('demoController', function ($scope, $interval) {
+      var getRandomPercent = function () {
         return Math.random() * 100;
       };
+
+      var getRandomPercentages = function (arraySize) {
+        var randomPercentages = [];
+        var size = arraySize || 10;
+        for(var i = 0; i < size; i++)
+        {
+          randomPercentages.push(getRandomPercent());
+        }
+
+        return randomPercentages;
+      };
+
+      var assignPercentages = function () {
+        var percentages = getRandomPercentages();
+        var scopeProperties = [
+          'basicHardcoded',
+          'basic',
+          'inline1',
+          'inline2',
+          'inline3',
+          'inline4',
+          'kitchenSink'
+        ];
+
+        for(var i = 0; i < scopeProperties.length; i++) {
+          $scope[scopeProperties[i]] = percentages.pop();
+        }
+      };
+
+      $scope.countdown = 0;
+      $interval(function () {
+        $scope.countdown = $scope.countdown - 1;
+        if ($scope.countdown <= 0) {
+          $scope.countdown = 5;
+          assignPercentages();
+
+          // we're manually changing the scope properties for the sake of this
+          // demo, so we need to manually kick off a digest
+          try {
+            $scope.$digest();
+          }
+          catch (error) {
+            // sssshhhhhh
+          };
+        }
+      }, 1000);
     });
   </script>
 </head>
 <body ng-app="demo">
   <dl class="container" ng-controller="demoController">
-    <dt><h1>Basic</h1></dt>
-    <dd class="jumbotron">
-      <radial percent-complete="getRandomPercent()"></radial>
-    </dd>
-
     <dt><h1>Basic (Hardcoded)</h1></dt>
     <dd class="jumbotron">
       <radial percent-complete="50"></radial>
+
+      <pre>
+        &lt;radial percent-complete=&quot;50&quot;&gt;&lt;/radial&gt;
+      </pre>
     </dd>
 
-    <dt><h1>The Kitchen Sink</h1></dt>
+    <dt><h1>Basic</h1></dt>
     <dd class="jumbotron">
-      <radial percent-complete="getRandomPercent()" font-family="'Comic Sans', 'Marker Felt', sans_serif" bg-color="e0f1cb" color="9ad154"></radial>
+      <span class="badge">{{countdown}}</span>
+      <radial percent-complete="basic"></radial>
+
+      <pre>
+        &lt;radial percent-complete=&quot;basic&quot;&gt;&lt;/radial&gt;
+      </pre>
+    </dd>
+
+    <dt><h1>Inline</h1></dt>
+    <dd class="jumbotron">
+      <span class="badge">{{countdown}}</span>
+      <radial radius="50" line-width="20" percent-complete="inline1"></radial>
+      <radial radius="50" line-width="20" percent-complete="inline2"></radial>
+      <radial radius="50" line-width="20" percent-complete="inline3"></radial>
+
+      <pre>
+      &lt;radial radius=&quot;50&quot; line-width=&quot;20&quot; percent-complete=&quot;inline1&quot;&gt;&lt;/radial&gt;<br/>      &lt;radial radius=&quot;50&quot; line-width=&quot;20&quot; percent-complete=&quot;inline2&quot;&gt;&lt;/radial&gt;<br/>      &lt;radial radius=&quot;50&quot; line-width=&quot;20&quot; percent-complete=&quot;inline3&quot;&gt;&lt;/radial&gt;
+      </pre>
+    </dd>
+
+    <dt><h1>The Kitchen Sink (with a terrible font choice)</h1></dt>
+    <dd class="jumbotron">
+      <span class="badge">{{countdown}}</span>
+      <radial percent-complete="kitchenSink"
+              font-family="'Comic Sans', 'Marker Felt', sans_serif"
+              radius="180"
+              line-width="75"
+              line-cap="round"
+              bg-color="e0f1cb"
+              color="9ad154"></radial>
+
+      <pre>
+        &lt;radial percent-complete=&quot;kitchenSink&quot;<br/>              font-family=&quot;'Comic Sans', 'Marker Felt', sans_serif&quot;<br/>              radius=&quot;180&quot;<br/>              line-width=&quot;75&quot;<br/>              line-cap=&quot;round&quot;<br/>              bg-color=&quot;e0f1cb&quot;<br/>              color=&quot;9ad154&quot;&gt;&lt;/radial&gt;
+      </pre>
     </dd>
   </dl>
 </body>
