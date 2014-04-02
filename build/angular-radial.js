@@ -90,7 +90,7 @@ angular.module('fullscreen.radial').directive('radial', function($timeout) {
       addText = function(percent) {
         var fontSize;
         if (!angular.isNumber(percent)) {
-          debugger;
+          return;
         }
         context.fillStyle = color;
         fontSize = getFontSize();
