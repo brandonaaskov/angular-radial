@@ -75,6 +75,7 @@ angular.module('fullscreen.radial').directive 'radial', ($timeout) ->
       addText percent # adds text in the middle
 
     addText = (percent) ->
+      return unless angular.isNumber percent
       # Lets add the text
       context.fillStyle = color
       fontSize = getFontSize()
