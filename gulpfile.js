@@ -39,10 +39,12 @@ gulp.task('compress', function () {
 });
 
 gulp.task('uncompressed', function () {
+  //versionless file
   gulp.src(paths.compiled)
     .pipe(concat(pkg.name + ".js"))
     .pipe(gulp.dest('build'));
 
+  //versioned file
   gulp.src(paths.compiled)
     .pipe(concat(pkg.name + "_"+ pkg.version +".js"))
     .pipe(gulp.dest('build'));
