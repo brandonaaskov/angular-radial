@@ -1,6 +1,6 @@
 {
   "name": "angular-radial",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "dependencies": {},
   "devDependencies": {
     "coffee-script": "1.x.x",

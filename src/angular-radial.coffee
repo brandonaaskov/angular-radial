@@ -42,7 +42,7 @@ angular.module('fullscreen.radial').directive 'radial', ($timeout) ->
     canvas.height = edgeLength
 
     getDegrees = ->
-      return unless scope.percentComplete
+      return unless angular.isNumber(scope.percentComplete)
       return (scope.percentComplete* 360)/100
 
     getRadians = (degrees) -> degrees * Math.PI/180
@@ -72,17 +72,16 @@ angular.module('fullscreen.radial').directive 'radial', ($timeout) ->
       drawBackground()
       endDegrees = 90 + getDegrees(percent)
       drawArc 90, endDegrees, color # draws "filled" arc on top
-      return unless percent > 0
       addText percent # adds text in the middle
 
-    addText = ->
+    addText = (percent) ->
       # Lets add the text
       context.fillStyle = color
       fontSize = getFontSize()
       context.font = "#{fontSize}px #{fontFamily}"
       context.textAlign = 'center'
       context.textBaseline = 'middle'
-      percent = Math.round scope.percentComplete
+      percent = Math.round percent
       context.fillText "#{percent}%", xCoord, yCoord
 
     # if we resize after we've drawn the arc

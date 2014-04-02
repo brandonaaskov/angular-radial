@@ -50,7 +50,7 @@ angular.module('fullscreen.radial').directive('radial', function($timeout) {
       canvas.width = edgeLength;
       canvas.height = edgeLength;
       getDegrees = function() {
-        if (!scope.percentComplete) {
+        if (!angular.isNumber(scope.percentComplete)) {
           return;
         }
         return (scope.percentComplete * 360) / 100;
@@ -85,19 +85,16 @@ angular.module('fullscreen.radial').directive('radial', function($timeout) {
         drawBackground();
         endDegrees = 90 + getDegrees(percent);
         drawArc(90, endDegrees, color);
-        if (!(percent > 0)) {
-          return;
-        }
         return addText(percent);
       };
-      addText = function() {
-        var fontSize, percent;
+      addText = function(percent) {
+        var fontSize;
         context.fillStyle = color;
         fontSize = getFontSize();
         context.font = "" + fontSize + "px " + fontFamily;
         context.textAlign = 'center';
         context.textBaseline = 'middle';
-        percent = Math.round(scope.percentComplete);
+        percent = Math.round(percent);
         return context.fillText("" + percent + "%", xCoord, yCoord);
       };
       $timeout(function() {
