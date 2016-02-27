@@ -12,7 +12,8 @@ angular.module('fullscreen.radial').directive('radial', function($timeout) {
       percentComplete: '=',
       bgColor: '@',
       color: '@',
-      fontFamily: '@'
+      fontFamily: '@',
+      fontColor: '@'
     },
     link: function(scope, element) {
       var addText, bgColor, canvas, clearCanvas, color, context, drawArc, drawBackground, drawMeter, edgeLength, fontFamily, getDegrees, getFontSize, getRadians, lineCap, lineWidth, radius, relativeFontSize, xCoord, yCoord;
@@ -98,6 +99,11 @@ angular.module('fullscreen.radial').directive('radial', function($timeout) {
         context.textAlign = 'center';
         context.textBaseline = 'middle';
         percent = Math.round(percent);
+
+        if (scope.fontColor) {
+          context.fillStyle = scope.fontColor;
+        }
+
         return context.fillText("" + percent + "%", xCoord, yCoord);
       };
       $timeout(function() {
