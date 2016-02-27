@@ -23,7 +23,8 @@ Wherever your `bower_components` folder lives, you'll see an angular-radial fold
         line-width="75"
         line-cap="round"
         bg-color="e0f1cb"
-        color="9ad154"></radial>
+        color="9ad154"
+        font-color="#fff"></radial>
 ```
 _note: please never use comic sans or marker felt in production_
 
